@@ -44,13 +44,13 @@ vector_load_execution_interleave_ops:
     nop
     mrs x17, PMCCNTR_EL0
     ldr q0, [x1]
-    eor v2.8b, v5.8b, v6.8b
+    eor v2.8b, v5.8b, v15.8b
     ldr q1, [x1]
-    eor v6.8b, v7.8b, v4.8b
+    eor v6.8b, v14.8b, v4.8b
     ldr q2, [x1]
-    eor v7.8b, v4.8b, v5.8b
+    eor v7.8b, v10.8b, v9.8b
     ldr q3, [x1]
-    eor v4.8b, v5.8b, v6.8b
+    eor v4.8b, v11.8b, v12.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
