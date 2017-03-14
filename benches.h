@@ -22,6 +22,7 @@ extern long long vector_load_execution_offset_neg(uint32_t*);
 extern long long vector_load_pair_execution(uint32_t*);
 extern long long vector_load_execution_add(uint32_t*);
 extern long long vector_load_execution_add_sched(uint32_t*);
+extern long long vector_load_pair_add_unrelated(uint32_t*);
 extern long long vector_load_pair_add_first(uint32_t*);
 extern long long vector_load_pair_add_second(uint32_t*);
 

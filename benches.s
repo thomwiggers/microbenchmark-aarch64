@@ -149,6 +149,26 @@ vector_load_pair_execution:
     ret
 
 .align 2
+.global vector_load_pair_add_unrelated, %function
+.type vector_load_pair_add_unrelated, %function
+vector_load_pair_add_unrelated:
+    nop
+    nop
+    nop
+    mov x1, x0
+    nop
+    nop
+    nop
+    nop
+    mrs x17, PMCCNTR_EL0
+    ldp q0, q1, [x1]
+    add v3.4s, v3.4s, v3.4s
+    mrs x18, PMCCNTR_EL0
+    sub x0, x18, x17
+    ret
+
+
+.align 2
 .global vector_load_pair_add_first
 .type vector_load_pair_add_first, %function
 vector_load_pair_add_first:

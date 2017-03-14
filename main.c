@@ -49,6 +49,7 @@ int main(int argc, char** argv) {
     test("vector_load_pair_execution", vector_load_pair_execution);
     test("vector_load_execution_add", vector_load_execution_add);
     test("vector_load_execution_add_sched", vector_load_execution_add_sched);
+    test("vector_load_pair_add_unrelated", vector_load_pair_add_unrelated);
     test("vector_load_pair_add_first", vector_load_pair_add_first);
     test("vector_load_pair_add_second", vector_load_pair_add_second);
 
