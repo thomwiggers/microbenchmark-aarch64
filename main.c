@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
     test("hundred_vector_adds_same_interleaved", hundred_vector_adds_same_interleaved);
     test("hundred_vector_adds_same_interleaved_two", hundred_vector_adds_same_interleaved_two);
     test("hundred_vector_adds_same_interleaved_three", hundred_vector_adds_same_interleaved_three);
+    test("vector_store", vector_store);
     test("vector_load_execution", vector_load_execution);
     test("vector_load_execution_interleave_ops", vector_load_execution_interleave_ops);
     test("vector_load_execution_offset", vector_load_execution_offset);

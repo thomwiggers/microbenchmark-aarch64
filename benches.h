@@ -14,6 +14,7 @@ extern long long hundred_vector_adds_same(uint32_t*);
 extern long long hundred_vector_adds_same_interleaved(uint32_t*);
 extern long long hundred_vector_adds_same_interleaved_two(uint32_t*);
 extern long long hundred_vector_adds_same_interleaved_three(uint32_t*);
+extern long long vector_store(uint32_t*);
 extern long long vector_load_execution(uint32_t*);
 extern long long vector_load_execution_interleave_ops(uint32_t*);
 extern long long vector_load_execution_offset(uint32_t*);

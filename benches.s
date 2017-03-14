@@ -9,6 +9,22 @@ empty:
     sub x0, x10, x9
     ret
 
+ .align	2
+.global	vector_store
+.type	vector_store, %function
+vector_store:
+    nop
+    mov x1, x0
+    nop
+    nop
+    nop
+    nop
+    mrs x9, PMCCNTR_EL0
+    str q0, [x1]
+    mrs x10, PMCCNTR_EL0
+    sub x0, x10, x9
+    ret
+
 .align 2
 .global vector_load_execution
 .type vector_load_execution, %function
