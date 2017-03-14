@@ -149,7 +149,7 @@ vector_load_pair_execution:
     ret
 
 .align 2
-.global vector_load_pair_add_unrelated, %function
+.global vector_load_pair_add_unrelated
 .type vector_load_pair_add_unrelated, %function
 vector_load_pair_add_unrelated:
     nop
