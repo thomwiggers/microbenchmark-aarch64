@@ -42,11 +42,16 @@ int main(int argc, char** argv) {
     test("hundred_vector_adds_same_interleaved_two", hundred_vector_adds_same_interleaved_two);
     test("hundred_vector_adds_same_interleaved_three", hundred_vector_adds_same_interleaved_three);
     test("vector_store", vector_store);
+    test("vector_load_unscaled_offset", vector_load_unscaled_offset);
+    test("vector_store_result", vector_store_result);
+    test("vector_store_add", vector_store_add);
+    test("vector_store_load", vector_store_load);
     test("vector_load_execution", vector_load_execution);
     test("vector_load_execution_interleave_ops", vector_load_execution_interleave_ops);
     test("vector_load_execution_offset", vector_load_execution_offset);
     test("vector_load_execution_offset_delay", vector_load_execution_offset_delay);
     test("vector_load_execution_offset_neg", vector_load_execution_offset_neg);
+    test("vector_store_pair_execution", vector_store_pair_execution);
     test("vector_load_pair_execution", vector_load_pair_execution);
     test("vector_load_execution_add", vector_load_execution_add);
     test("vector_load_execution_add_sched", vector_load_execution_add_sched);

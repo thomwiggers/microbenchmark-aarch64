@@ -10,6 +10,22 @@ empty:
     ret
 
  .align	2
+.global	vector_load_unscaled_offset
+.type	vector_load_unscaled_offset, %function
+vector_load_unscaled_offset:
+    nop
+    mov x1, x0
+    nop
+    nop
+    nop
+    nop
+    mrs x9, PMCCNTR_EL0
+    ldur q0, [x1, #16]
+    mrs x10, PMCCNTR_EL0
+    sub x0, x10, x9
+    ret
+
+ .align	2
 .global	vector_store
 .type	vector_store, %function
 vector_store:
@@ -24,6 +40,58 @@ vector_store:
     mrs x10, PMCCNTR_EL0
     sub x0, x10, x9
     ret
+
+ .align	2
+.global	vector_store_result
+.type	vector_store_result, %function
+vector_store_result:
+    nop
+    mov x1, x0
+    nop
+    nop
+    nop
+    nop
+    mrs x9, PMCCNTR_EL0
+    add v0.4s, v0.4s, v0.4s
+    str q0, [x1]
+    mrs x10, PMCCNTR_EL0
+    sub x0, x10, x9
+    ret
+
+ .align	2
+.global	vector_store_add
+.type	vector_store_add, %function
+vector_store_add:
+    nop
+    mov x1, x0
+    nop
+    nop
+    nop
+    nop
+    mrs x9, PMCCNTR_EL0
+    str q0, [x1]
+    add v0.4s, v0.4s, v0.4s
+    mrs x10, PMCCNTR_EL0
+    sub x0, x10, x9
+    ret
+
+ .align	2
+.global	vector_store_load
+.type	vector_store_load, %function
+vector_store_load:
+    nop
+    mov x1, x0
+    nop
+    nop
+    nop
+    nop
+    mrs x9, PMCCNTR_EL0
+    str q0, [x1]
+    ldr q0, [x1]
+    mrs x10, PMCCNTR_EL0
+    sub x0, x10, x9
+    ret
+
 
 .align 2
 .global vector_load_execution
@@ -139,6 +207,24 @@ vector_load_execution_offset_neg:
     ldr q1, [x1, #-16]
     ldr q2, [x1, #-16]
     ldr q3, [x1, #-16]
+    mrs x18, PMCCNTR_EL0
+    sub x0, x18, x17
+    ret
+
+.align 2
+.global vector_store_pair_execution
+.type vector_store_pair_execution, %function
+vector_store_pair_execution:
+    nop
+    nop
+    nop
+    mov x1, x0
+    nop
+    nop
+    nop
+    nop
+    mrs x17, PMCCNTR_EL0
+    stp q0, q1, [x1]
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
