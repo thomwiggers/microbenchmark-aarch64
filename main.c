@@ -33,18 +33,18 @@ int main(int argc, char** argv) {
     puts("Welcome to microbenchmarking");
 
     test("empty", empty);
-    test("hundred_adds", hundred_adds);
-    test("hundred_normal_adds_input_is_output", hundred_normal_adds_input_is_output);
-    test("hundred_normal_adds_interleaved", hundred_normal_adds_interleaved);
-    test("hundred_normal_adds_interleaved_margin", hundred_normal_adds_interleaved_margin);
-    test("hundred_vector_adds_same", hundred_vector_adds_same);
-    test("hundred_vector_adds_same_interleaved", hundred_vector_adds_same_interleaved);
-    test("hundred_vector_adds_same_interleaved_two", hundred_vector_adds_same_interleaved_two);
-    test("hundred_vector_adds_same_interleaved_three", hundred_vector_adds_same_interleaved_three);
+    test("hundred_eors", hundred_eors);
+    test("hundred_normal_eors_input_is_output", hundred_normal_eors_input_is_output);
+    test("hundred_normal_eors_interleaved", hundred_normal_eors_interleaved);
+    test("hundred_normal_eors_interleaved_margin", hundred_normal_eors_interleaved_margin);
+    test("hundred_vector_eors_same", hundred_vector_eors_same);
+    test("hundred_vector_eors_same_interleaved", hundred_vector_eors_same_interleaved);
+    test("hundred_vector_eors_same_interleaved_two", hundred_vector_eors_same_interleaved_two);
+    test("hundred_vector_eors_same_interleaved_three", hundred_vector_eors_same_interleaved_three);
     test("vector_store", vector_store);
     test("vector_load_unscaled_offset", vector_load_unscaled_offset);
     test("vector_store_result", vector_store_result);
-    test("vector_store_add", vector_store_add);
+    test("vector_store_eor", vector_store_eor);
     test("vector_store_load", vector_store_load);
     test("vector_load_execution", vector_load_execution);
     test("vector_load_execution_interleave_ops", vector_load_execution_interleave_ops);
@@ -53,10 +53,10 @@ int main(int argc, char** argv) {
     test("vector_load_execution_offset_neg", vector_load_execution_offset_neg);
     test("vector_store_pair_execution", vector_store_pair_execution);
     test("vector_load_pair_execution", vector_load_pair_execution);
-    test("vector_load_execution_add", vector_load_execution_add);
-    test("vector_load_execution_add_sched", vector_load_execution_add_sched);
-    test("vector_load_pair_add_unrelated", vector_load_pair_add_unrelated);
-    test("vector_load_pair_add_first", vector_load_pair_add_first);
-    test("vector_load_pair_add_second", vector_load_pair_add_second);
+    test("vector_load_execution_eor", vector_load_execution_eor);
+    test("vector_load_execution_eor_sched", vector_load_execution_eor_sched);
+    test("vector_load_pair_eor_unrelated", vector_load_pair_eor_unrelated);
+    test("vector_load_pair_eor_first", vector_load_pair_eor_first);
+    test("vector_load_pair_eor_second", vector_load_pair_eor_second);
 
 }

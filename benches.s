@@ -52,16 +52,16 @@ vector_store_result:
     nop
     nop
     mrs x9, PMCCNTR_EL0
-    add v0.4s, v0.4s, v0.4s
+    eor v0.8b, v0.8b, v0.8b
     str q0, [x1]
     mrs x10, PMCCNTR_EL0
     sub x0, x10, x9
     ret
 
  .align	2
-.global	vector_store_add
-.type	vector_store_add, %function
-vector_store_add:
+.global	vector_store_eor
+.type	vector_store_eor, %function
+vector_store_eor:
     nop
     mov x1, x0
     nop
@@ -70,7 +70,7 @@ vector_store_add:
     nop
     mrs x9, PMCCNTR_EL0
     str q0, [x1]
-    add v0.4s, v0.4s, v0.4s
+    eor v0.8b, v0.8b, v0.8b
     mrs x10, PMCCNTR_EL0
     sub x0, x10, x9
     ret
@@ -175,15 +175,15 @@ vector_load_execution_offset_delay:
     nop
     mrs x17, PMCCNTR_EL0
     ldr q0, [x1, #16]
-    add v0.4s, v0.4s, v0.4s
+    eor v0.8b, v0.8b, v0.8b
     ldr q1, [x1, #16]
-    add v1.4s, v1.4s, v1.4s
+    eor v1.8b, v1.8b, v1.8b
     ldr q2, [x1, #16]
-    add v2.4s, v2.4s, v2.4s
+    eor v2.8b, v2.8b, v2.8b
     ldr q3, [x1, #16]
-    add v3.4s, v3.4s, v3.4s
+    eor v3.8b, v3.8b, v3.8b
     ldr q4, [x1, #16]
-    add v4.4s, v4.4s, v4.4s
+    eor v4.8b, v4.8b, v4.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
@@ -197,7 +197,7 @@ vector_load_execution_offset_neg:
     nop
     nop
     mov x1, x0
-    add x1, x1, #16
+    eor x1, x1, #16
     nop
     nop
     nop
@@ -251,9 +251,9 @@ vector_load_pair_execution:
     ret
 
 .align 2
-.global vector_load_pair_add_unrelated
-.type vector_load_pair_add_unrelated, %function
-vector_load_pair_add_unrelated:
+.global vector_load_pair_eor_unrelated
+.type vector_load_pair_eor_unrelated, %function
+vector_load_pair_eor_unrelated:
     nop
     nop
     nop
@@ -264,16 +264,16 @@ vector_load_pair_add_unrelated:
     nop
     mrs x17, PMCCNTR_EL0
     ldp q0, q1, [x1]
-    add v3.4s, v3.4s, v3.4s
+    eor v3.8b, v3.8b, v3.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 
 .align 2
-.global vector_load_pair_add_first
-.type vector_load_pair_add_first, %function
-vector_load_pair_add_first:
+.global vector_load_pair_eor_first
+.type vector_load_pair_eor_first, %function
+vector_load_pair_eor_first:
     nop
     nop
     nop
@@ -284,15 +284,15 @@ vector_load_pair_add_first:
     nop
     mrs x17, PMCCNTR_EL0
     ldp q0, q1, [x1]
-    add v0.4s, v0.4s, v0.4s
+    eor v0.8b, v0.8b, v0.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 .align 2
-.global vector_load_pair_add_second
-.type vector_load_pair_add_second, %function
-vector_load_pair_add_second:
+.global vector_load_pair_eor_second
+.type vector_load_pair_eor_second, %function
+vector_load_pair_eor_second:
     nop
     nop
     nop
@@ -305,15 +305,15 @@ vector_load_pair_add_second:
     ldp q0, q1, [x1]
     nop
     nop
-    add v1.4s, v1.4s, v1.4s
+    eor v1.8b, v1.8b, v1.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
     
 .align 2
-.global vector_load_execution_add
-.type vector_load_execution_add, %function
-vector_load_execution_add:
+.global vector_load_execution_eor
+.type vector_load_execution_eor, %function
+vector_load_execution_eor:
     nop
     nop
     nop
@@ -324,23 +324,23 @@ vector_load_execution_add:
     nop
     mrs x17, PMCCNTR_EL0
     ldr q0, [x1]
-    add v0.4s, v0.4s, v0.4s
+    eor v0.8b, v0.8b, v0.8b
     ldr q1, [x1]
-    add v1.4s, v1.4s, v1.4s
+    eor v1.8b, v1.8b, v1.8b
     ldr q2, [x1]
-    add v2.4s, v2.4s, v2.4s
+    eor v2.8b, v2.8b, v2.8b
     ldr q3, [x1]
-    add v3.4s, v3.4s, v3.4s
+    eor v3.8b, v3.8b, v3.8b
     ldr q4, [x1]
-    add v4.4s, v4.4s, v4.4s
+    eor v4.8b, v4.8b, v4.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 .align 2
-.global vector_load_execution_add_sched
-.type vector_load_execution_add_sched, %function
-vector_load_execution_add_sched:
+.global vector_load_execution_eor_sched
+.type vector_load_execution_eor_sched, %function
+vector_load_execution_eor_sched:
     nop
     nop
     nop
@@ -355,20 +355,20 @@ vector_load_execution_add_sched:
     ldr q2, [x1]
     ldr q3, [x1]
     ldr q4, [x1]
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v3.4s, v3.4s, v3.4s
-    add v4.4s, v4.4s, v4.4s
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v3.8b, v3.8b, v3.8b
+    eor v4.8b, v4.8b, v4.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 
 .align	2
-.global	hundred_adds
-.type	hundred_adds, %function
-hundred_adds:
+.global	hundred_eors
+.type	hundred_eors, %function
+hundred_eors:
     nop
     nop
     nop
@@ -379,106 +379,106 @@ hundred_adds:
     nop
     nop
     mrs x17, PMCCNTR_EL0
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x15
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
-    add x9, xzr, xzr
-    add x10, x11, x12
-    add x11, x12, x13
-    add x12, x13, x14
-    add x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x15
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
+    eor x9, xzr, xzr
+    eor x10, x11, x12
+    eor x11, x12, x13
+    eor x12, x13, x14
+    eor x15, x16, x17
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
@@ -487,9 +487,9 @@ hundred_adds:
     ret
 
 .align	2
-.global	hundred_normal_adds_input_is_output
-.type	hundred_normal_adds_input_is_output, %function
-hundred_normal_adds_input_is_output:
+.global	hundred_normal_eors_input_is_output
+.type	hundred_normal_eors_input_is_output, %function
+hundred_normal_eors_input_is_output:
     nop
     nop
     nop
@@ -501,114 +501,114 @@ hundred_normal_adds_input_is_output:
     nop
     nop
     mrs x18, PMCCNTR_EL0
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
-    add x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
+    eor x9, x9, x9
     mrs x17, PMCCNTR_EL0
     sub x0, x17, x18
     ret
 
 .align	2
-.global	hundred_normal_adds_interleaved
-.type	hundred_normal_adds_interleaved, %function
-hundred_normal_adds_interleaved:
+.global	hundred_normal_eors_interleaved
+.type	hundred_normal_eors_interleaved, %function
+hundred_normal_eors_interleaved:
     nop
     nop
     nop
@@ -620,114 +620,114 @@ hundred_normal_adds_interleaved:
     nop
     nop
     mrs x17, PMCCNTR_EL0
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
-    add x9, x10, x11
-    add x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
+    eor x9, x10, x11
+    eor x10, x9, x11
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 .align	2
-.global	hundred_normal_adds_interleaved_margin
-.type	hundred_normal_adds_interleaved_margin, %function
-hundred_normal_adds_interleaved_margin:
+.global	hundred_normal_eors_interleaved_margin
+.type	hundred_normal_eors_interleaved_margin, %function
+hundred_normal_eors_interleaved_margin:
     nop
     nop
     nop
@@ -739,114 +739,114 @@ hundred_normal_adds_interleaved_margin:
     nop
     nop
     mrs x17, PMCCNTR_EL0
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
-    add x9, x9, x11
-    add x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
+    eor x9, x9, x11
+    eor x13, x12, x11
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 .align	2
-.global	hundred_vector_adds_same
-.type	hundred_vector_adds_same, %function
-hundred_vector_adds_same:
+.global	hundred_vector_eors_same
+.type	hundred_vector_eors_same, %function
+hundred_vector_eors_same:
     nop
     nop
     nop
@@ -858,114 +858,114 @@ hundred_vector_adds_same:
     nop
     nop
     mrs x17, PMCCNTR_EL0
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
-    add v0.4s, v0.4s, v0.4s
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v0.8b, v0.8b, v0.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 .align	2
-.global	hundred_vector_adds_same_interleaved
-.type	hundred_vector_adds_same_interleaved, %function
-hundred_vector_adds_same_interleaved:
+.global	hundred_vector_eors_same_interleaved
+.type	hundred_vector_eors_same_interleaved, %function
+hundred_vector_eors_same_interleaved:
     nop
     nop
     nop
@@ -977,115 +977,115 @@ hundred_vector_adds_same_interleaved:
     nop
     nop
     mrs x17, PMCCNTR_EL0
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 
 .align	2
-.global	hundred_vector_adds_same_interleaved_two
-.type	hundred_vector_adds_same_interleaved_two, %function
-hundred_vector_adds_same_interleaved_two:
+.global	hundred_vector_eors_same_interleaved_two
+.type	hundred_vector_eors_same_interleaved_two, %function
+hundred_vector_eors_same_interleaved_two:
     nop
     nop
     nop
@@ -1097,114 +1097,114 @@ hundred_vector_adds_same_interleaved_two:
     nop
     nop
     mrs x17, PMCCNTR_EL0
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v0.4s, v0.4s, v0.4s
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v0.8b, v0.8b, v0.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
 
 .align	2
-.global	hundred_vector_adds_same_interleaved_three
-.type	hundred_vector_adds_same_interleaved_three, %function
-hundred_vector_adds_same_interleaved_three:
+.global	hundred_vector_eors_same_interleaved_three
+.type	hundred_vector_eors_same_interleaved_three, %function
+hundred_vector_eors_same_interleaved_three:
     nop
     nop
     nop
@@ -1216,106 +1216,106 @@ hundred_vector_adds_same_interleaved_three:
     nop
     nop
     mrs x17, PMCCNTR_EL0
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
-    add v0.4s, v0.4s, v0.4s
-    add v1.4s, v1.4s, v1.4s
-    add v2.4s, v2.4s, v2.4s
-    add v4.4s, v4.4s, v4.4s
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
+    eor v0.8b, v0.8b, v0.8b
+    eor v1.8b, v1.8b, v1.8b
+    eor v2.8b, v2.8b, v2.8b
+    eor v4.8b, v4.8b, v4.8b
     mrs x18, PMCCNTR_EL0
     sub x0, x18, x17
     ret
