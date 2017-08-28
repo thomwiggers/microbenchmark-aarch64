@@ -123,6 +123,7 @@ class LoadExecutionTime(Function):
         self.name = f'execution_time_ldr_{type}'
         self.extra_template_vars['address'] = 'x0'
         self.extra_template_vars['type'] = type
+        self.extra_template_vars['instruction'] = 'ldr'
         if type == 'normal':
             regs = self.normal_registers
         elif type in ('vector128', 'vector64'):
@@ -144,6 +145,12 @@ class LoadResultLatency(LoadExecutionTime):
 
     def process_result(self, result):
         self.result = result[self.name] - result[self.parent_name]
+
+
+class StoreExecutionTime(LoadExecutionTime):
+    def __init__(self, type):
+        super().__init__(type)
+        self.name = f'execution_time_str_{type}'
 
 
 class Benchmark:
@@ -204,5 +211,6 @@ if __name__ == "__main__":
 
         benchmark.add(LoadExecutionTime(type))
         benchmark.add(LoadResultLatency(type))
+        benchmark.add(StoreExecutionTime(type))
 
     benchmark.run()

@@ -1,4 +1,4 @@
 {% extends "base.s.j2" %}
 {% block body %}
-ldr {{ r0 }}, [{{ address }}]
+{{ instruction }} {{ r0 }}, [{{ address }}]
 {% endblock %}
