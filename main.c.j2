@@ -1,0 +1,34 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <inttypes.h>
+
+
+{% for function in functions %}
+extern long long {{function}}(uint32_t*);
+{% endfor %}
+
+#define N_TESTS 10000
+
+int compare(const void *a, const void *b) {
+    return ((int)*(long long*) a - *(long long*)b);
+}
+
+void test(char* name, long long (*fp)(uint32_t*)) {
+    uint32_t buffer[8] = {0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49};
+
+    long long tests[N_TESTS];
+    for (int i = 0; i < N_TESTS; ++i) {
+        tests[i] = (*fp)(buffer);
+    }
+
+    qsort(tests, N_TESTS, sizeof(long long), compare);
+    printf("%s,%lld\n", name, tests[N_TESTS/2]);
+
+}
+
+int main(int argc, char** argv) {
+
+    {% for function in functions %}
+    test("{{ function }}", {{function}});
+    {% endfor %}
+}

@@ -1,0 +1,9 @@
+.global	{{function_name}}
+.type	{{function_name}}, %function
+{{function_name}}:
+mrs {{register_clock_before}}, PMCCNTR_EL0
+{% block body %}
+{% endblock %}
+mrs {{register_clock_after}}, PMCCNTR_EL0
+sub {{return_register}}, {{register_clock_after}}, {{register_clock_before}}
+ret
