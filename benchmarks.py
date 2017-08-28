@@ -8,10 +8,6 @@ import math
 from jinja2 import Environment, FileSystemLoader
 
 
-vector_registers = {'q0', 'q1', 'q2', 'q3', 'q4', 'q5'}
-normal_registers = {'x0', 'x1', 'x2', 'x3', 'x4', 'x5',
-                    'x6', 'x7', 'x9', 'x10'}
-
 return_register = "x0"
 
 template_env = Environment(loader=FileSystemLoader('benchmarks'))
@@ -34,9 +30,11 @@ template_env.filters['vectorreg'] = vector_value_register
 
 class Function:
     def __init__(self):
-        self.vector_registers = {'q0', 'q1', 'q2', 'q3', 'q4', 'q5'}
-        self.normal_registers = {'x0', 'x1', 'x2', 'x3', 'x4', 'x5',
-                                 'x6', 'x7', 'x9', 'x10'}
+        self.vector_registers = {'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'
+                                 }
+        # don't include r0 as it may contain an arg
+        self.normal_registers = {'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7',
+                                 'x9', 'x10', 'x11', 'x12', 'x13'}
         self.extra_template_vars = {}
 
     @property
@@ -77,7 +75,7 @@ class Empty(Function):
 
             :param: result The result dictionary parsed from csv
         """
-        self.result = int(result[self.name])
+        self.result = result[self.name]
 
 
 class InstructionExecutionTime(Function):
@@ -94,31 +92,58 @@ class InstructionExecutionTime(Function):
             raise ValueError("type should be either normal or vector")
         self.extra_template_vars['type'] = type
         self.extra_template_vars['instruction'] = instruction
-        self.extra_template_vars['r0'] = regs.pop()
-        self.extra_template_vars['r1'] = regs.pop()
-        self.extra_template_vars['r2'] = regs.pop()
-        self.extra_template_vars['r3'] = regs.pop()
+        for i in range(8):
+            self.extra_template_vars[f'r{i}'] = regs.pop()
 
     def process_result(self, result):
         """Processes the result value
 
             :param: result The result dictionary parsed from csv
         """
-        self.result = (int(result[self.name]) - int(result['empty'])) / 20
+        self.result = (result[self.name] - result['empty']) / 20
 
 
 class InstructionResultLatency(InstructionExecutionTime):
-    def __init__(self, instruction, type):
+    def __init__(self, instruction, type='normal'):
         super().__init__(instruction, type)
         self.parent_name = self.name
         self.name += "_latency"
-        self.extra_template_vars['r1'] = self.extra_template_vars['r0']
-        self.extra_template_vars['r2'] = self.extra_template_vars['r0']
-        self.extra_template_vars['r3'] = self.extra_template_vars['r0']
+        for i in range(1, 8):
+            self.extra_template_vars[f'r{i}'] = self.extra_template_vars['r0']
 
     def process_result(self, result):
-        self.result = math.ceil((int(result[self.name]) -
-                                 int(result[self.parent_name])) / 20)
+        self.result = math.ceil((result[self.name] -
+                                 result[self.parent_name]) / 20)
+
+
+class LoadExecutionTime(Function):
+    def __init__(self, type):
+        super().__init__()
+        self.template = 'load_time.s.j2'
+        self.name = f'execution_time_ldr_{type}'
+        self.extra_template_vars['address'] = 'x0'
+        self.extra_template_vars['type'] = type
+        if type == 'normal':
+            regs = self.normal_registers
+        elif type in ('vector128', 'vector64'):
+            regs = self.vector_registers
+        else:
+            raise ValueError("type should be either normal or vector")
+        self.extra_template_vars['r0'] = regs.pop()
+
+    def process_result(self, result):
+        self.result = result[self.name] - result['empty']
+
+
+class LoadResultLatency(LoadExecutionTime):
+    def __init__(self, type):
+        super().__init__(type)
+        self.parent_name = self.name
+        self.name += '_latency'
+        self.template = 'load_latency.s.j2'
+
+    def process_result(self, result):
+        self.result = result[self.name] - result[self.parent_name]
 
 
 class Benchmark:
@@ -152,7 +177,7 @@ class Benchmark:
         output = subprocess.check_output(['./bench']).decode().strip()
         self.results = {}
         for k, v in csv.reader(output.split('\n')):
-            self.results[k] = v
+            self.results[k] = int(v)
 
     def run(self):
         self._write()
@@ -171,11 +196,13 @@ class Benchmark:
 if __name__ == "__main__":
     benchmark = Benchmark()
     benchmark.add(Empty())
-    instructions = ['eor', 'and', 'orr', 'add', 'sub']
+    instructions = ['eor', 'and', 'orr', 'orn', 'add', 'sub', 'mul']
     for type in ('normal', 'vector128', 'vector64'):
         for instruction in instructions:
             benchmark.add(InstructionExecutionTime(instruction, type=type))
-        for instruction in instructions:
             benchmark.add(InstructionResultLatency(instruction, type=type))
+
+        benchmark.add(LoadExecutionTime(type))
+        benchmark.add(LoadResultLatency(type))
 
     benchmark.run()
