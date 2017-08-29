@@ -1,0 +1,7 @@
+{% extends "base.s.j2" %}
+{% block body %}
+{{ instruction }} {{ r0 }}, [{{ address }}]
+{{ instruction }} {{ r1 }}, [{{ address }}]
+{{ instruction }} {{ r2 }}, [{{ address }}]
+{{ instruction }} {{ r3 }}, [{{ address }}]
+{% endblock %}
