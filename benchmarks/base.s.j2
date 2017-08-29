@@ -1,8 +1,7 @@
 .global	{{function_name}}
 .type	{{function_name}}, %function
 {{function_name}}:
-{% for i in range(20): %}
-nop
+{% for i in range(20): %}nop
 {% endfor %}
 mrs {{register_clock_before}}, PMCCNTR_EL0
 {% block body %}

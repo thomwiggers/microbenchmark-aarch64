@@ -1,5 +1,5 @@
 {% extends "base.s.j2" %}
 {% block body %}
 ldr     {{ r0 }}, [{{ address }}]
-and     {{ r0|vectorreg(type) }}, {{ r0|vectorreg(type) }}, {{ r0|vectorreg(type) }}
+and     {{ r1|vectorreg(type) }}, {{ r1|vectorreg(type) }}, {{ r1|vectorreg(type) }}
 {% endblock %}

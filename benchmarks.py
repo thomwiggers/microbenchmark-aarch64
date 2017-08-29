@@ -65,10 +65,11 @@ class Function:
 
 
 class Empty(Function):
+    template = "empty.s.j2"
+
     def __init__(self):
         super().__init__()
         self.name = "empty"
-        self.template = "empty.s.j2"
 
     def process_result(self, result):
         """Processes the result value
@@ -79,10 +80,11 @@ class Empty(Function):
 
 
 class InstructionExecutionTime(Function):
+    template = "execution.s.j2"
+
     def __init__(self, instruction, type='normal'):
         super().__init__()
         self.name = f"execution_time_{instruction}_{type}"
-        self.template = "execution.s.j2"
         self.type = type
         if type == 'normal':
             regs = self.normal_registers
@@ -117,17 +119,19 @@ class InstructionResultLatency(InstructionExecutionTime):
 
 
 class LoadExecutionTime(Function):
+    instruction = 'ldr'
+    template = 'load_time.s.j2'
+
     def __init__(self, type):
         super().__init__()
-        self.template = 'load_time.s.j2'
-        self.name = f'execution_time_ldr_{type}'
+        self.name = f'execution_time_{self.instruction}_{type}'
         self.extra_template_vars['address'] = 'x0'
         self.extra_template_vars['type'] = type
-        self.extra_template_vars['instruction'] = 'ldr'
+        self.extra_template_vars['instruction'] = self.instruction
         if type == 'normal':
-            regs = self.normal_registers
+            self.regs = regs = self.normal_registers
         elif type in ('vector128', 'vector64'):
-            regs = self.vector_registers
+            self.regs = regs = self.vector_registers
         else:
             raise ValueError("type should be either normal or vector")
         self.extra_template_vars['r0'] = regs.pop()
@@ -136,21 +140,130 @@ class LoadExecutionTime(Function):
         self.result = result[self.name] - result['empty']
 
 
+class LoadPairExecutionTime(LoadExecutionTime):
+    instruction = 'ldp'
+    template = 'ldp.s.j2'
+
+    def __init__(self, type):
+        super().__init__(type)
+        self.extra_template_vars['r1'] = self.regs.pop()
+
+
+class LoadMultipleExecutionTime(LoadExecutionTime):
+    template = 'load_multiple.s.j2'
+
+    def __init__(self, type):
+        super().__init__(type)
+        self.name += '_multiple'
+        self.extra_template_vars['r1'] = self.regs.pop()
+        self.extra_template_vars['r2'] = self.regs.pop()
+        self.extra_template_vars['r3'] = self.regs.pop()
+
+    def process_result(self, result):
+        super().process_result(result)
+        self.result /= 4
+
+
+class LoadPairMultipleExecutionTime(LoadMultipleExecutionTime):
+    instruction = 'ldp'
+    template = 'ldp_multiple.s.j2'
+
+    def __init__(self, type):
+        super().__init__(type)
+        self.extra_template_vars['r4'] = self.regs.pop()
+        self.extra_template_vars['r5'] = self.regs.pop()
+        self.extra_template_vars['r6'] = self.regs.pop()
+        self.extra_template_vars['r7'] = self.regs.pop()
+
+
 class LoadResultLatency(LoadExecutionTime):
+    template = 'load_latency.s.j2'
+
     def __init__(self, type):
         super().__init__(type)
         self.parent_name = self.name
         self.name += '_latency'
-        self.template = 'load_latency.s.j2'
+        self.extra_template_vars['r1'] = self.extra_template_vars['r0']
 
     def process_result(self, result):
-        self.result = result[self.name] - result[self.parent_name]
+        self.result = (result[self.name] - result[self.parent_name] -
+                       math.ceil(
+                           (result[f'execution_time_add_{type}']
+                            - result['empty']) / 20))
+
+
+class LoadPairResultLatency(LoadResultLatency):
+    instruction = 'ldp'
+    template = 'ldp_latency.s.j2'
+
+    def __init__(self, type):
+        super().__init__(type)
+        self.extra_template_vars['r1'] = self.regs.pop()
+
+
+class LoadPairSecondResultLatency(LoadPairResultLatency):
+    template = 'ldp_latency_second.s.j2'
+
+    def __init__(self, type):
+        super().__init__(type)
+        self.name += '_second'
 
 
 class StoreExecutionTime(LoadExecutionTime):
+    instruction = 'str'
+
     def __init__(self, type):
         super().__init__(type)
-        self.name = f'execution_time_str_{type}'
+        self.name = f'execution_time_{self.instruction}_{type}'
+
+
+class StorePairExecutionTime(StoreExecutionTime):
+    instruction = 'stp'
+    template = 'ldp.s.j2'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra_template_vars['r1'] = self.regs.pop()
+
+
+class StoreReverseLatency(LoadExecutionTime):
+    instruction = 'str'
+    template = 'str_reverse_latency.s.j2'
+
+    def __init__(self, type, previous_instruction):
+        super().__init__(type)
+        self.parent_name = f'execution_time_{self.instruction}_{type}'
+        self.name = f'execution_time_{self.instruction}_{type}_reverse_latency'
+        self.type = type
+        self.previous_instruction = previous_instruction
+        self.extra_template_vars['r1'] = self.regs.pop()
+        self.extra_template_vars['previous_instruction'] = previous_instruction
+
+    def process_result(self, result):
+        prev_instruction_time = (
+            result[f'execution_time_{self.previous_instruction}'
+                   f'_{self.type}_latency'] - result['empty']) / 20
+        self.result = (result[self.name] - result[self.parent_name] -
+                       prev_instruction_time)
+
+
+class LoadPipelineExecutionTime(LoadExecutionTime):
+    instruction = 'ldr'
+
+    def __init__(self, type):
+        super().__init__(type)
+        self.type = type
+        self.name = f'pipeline_time_{self.instruction}_{type}'
+        self.extra_instruction = 'eor'
+        self.extra_template_vars['extra_instruction'] = 'eor'
+        self.extra_template_vars['r1'] = self.regs.pop()
+
+    def process_result(self, result):
+        extra_instruction_time = math.ceil(
+            (result[f'execution_time_{self.extra_instruction}_{self.type}'] -
+             result['empty']) / 20)
+        self.result = (result[self.name] - result['empty'] -
+                       extra_instruction_time)
 
 
 class Benchmark:
@@ -210,7 +323,15 @@ if __name__ == "__main__":
             benchmark.add(InstructionResultLatency(instruction, type=type))
 
         benchmark.add(LoadExecutionTime(type))
+        benchmark.add(LoadMultipleExecutionTime(type))
         benchmark.add(LoadResultLatency(type))
+        benchmark.add(LoadPairExecutionTime(type))
+        benchmark.add(LoadPairMultipleExecutionTime(type))
+        benchmark.add(LoadPairResultLatency(type))
+        benchmark.add(LoadPairSecondResultLatency(type))
+        benchmark.add(LoadPipelineExecutionTime(type))
         benchmark.add(StoreExecutionTime(type))
+        benchmark.add(StoreReverseLatency(type, 'eor'))
+        benchmark.add(StorePairExecutionTime(type))
 
     benchmark.run()
