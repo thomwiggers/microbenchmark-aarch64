@@ -24,4 +24,4 @@ Cite
 
 If you use this work, please refer to the parent work:
 
-Wiggers, T. _Energy-efficient ARM64 Cluster with Cryptanalytic Applications: 80 cores that do not cost you an ARM and a leg._ Latincrypt 2017. _to appear_
+Thom Wiggers _Energy-efficient ARM64 Cluster with Cryptanalytic Applications: 80 cores that do not cost you an ARM and a leg._ Latincrypt 2017. _to appear_
